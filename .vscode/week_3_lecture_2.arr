@@ -37,4 +37,25 @@ plants = load-table:
 end
 
 plants.length()
-plants.row-n(101)
+#plants.row-n(101)
+
+glucose = load-table:
+  patient-id :: String,
+  glucose-level :: String,
+  date-time :: String,
+  insulin-dose :: String,
+  exercise-duration :: String,
+  stress-level :: String
+  source: csv-table-file("glucose_levels.csv", default-options)
+  sanitize patient-id using num-sanitizer
+  sanitize glucose-level using num-sanitizer
+  sanitize insulin-dose using num-sanitizer
+  sanitize exercise-duration using num-sanitizer
+  sanitize stress-level using num-sanitizer
+end
+
+glucose.row-n(3)["patient-id"]
+
+glucose
+
+lr-plot(glucose, "glucose-level", "stress-level")
