@@ -30,7 +30,7 @@ where:
 end
     
 fun rock-paper-scissors(input-1 :: String, input-2 :: String) -> String:
-  doc: ""
+  doc: "returns the output of a rock paper scissors game"
   if (input-1 == "rock") and (input-2 == "scissors"):
     "player 1"
   else if (input-1 == "rock") and (input-2 == "paper"):
@@ -41,6 +41,8 @@ fun rock-paper-scissors(input-1 :: String, input-2 :: String) -> String:
     "player 2"
   else if (input-1 == "scissors") and (input-2 == "rock"):
     "player 2"
+  else if (input-1 == "scissors") and (input-2 == "paper"):
+    "player 1"
   else if input-1 == input-2:
     "tie"
   else:
@@ -51,6 +53,8 @@ where:
   rock-paper-scissors("rock", "paper") is "player 2"
   rock-paper-scissors("paper", "rock") is "player 1"
   rock-paper-scissors("paper", "scissors") is "player 2"
+  rock-paper-scissors("scissors", "rock") is "player 2"
+  rock-paper-scissors("scissors", "paper") is "player 1"
   rock-paper-scissors("rock", "rock") is "tie"
   rock-paper-scissors("hello", "scissors") is "invalid choice"
 end
