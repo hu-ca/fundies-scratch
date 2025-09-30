@@ -1,4 +1,6 @@
-use context starter2024
+use context dcic2024
+include csv
+include data-source
 
 fun leap-year(year :: Number) -> Boolean:
   doc: "checks if given year is a leap year by checking when divided by 4, the remainder is 0"
@@ -59,5 +61,32 @@ where:
   rock-paper-scissors("hello", "scissors") is "invalid choice"
 end
 
+planets = table: planet :: String, distance :: Number
+  row: "Mercury", 0.39
+  row: "Venus", 0.72
+  row: "Earth", 1
+  row: "Mars", 1.52
+  row: "Jupiter", 5.2
+  row: "Saturn", 9.54
+  row: "Uranus", 19.2
+  row: "Neptune", 30.06
+end
+
+planets
+mars = planets.row-n(3)
+mars
+mars["distance"]
     
+
+something = load-table:
+  year :: String,
+  day :: String,
+  month :: String,
+  rate :: String
+  source: csv-table-file("boe_rates.csv", default-options)
+  sanitize year using num-sanitizer
+  sanitize day using num-sanitizer
+  sanitize rate using num-sanitizer
+end
       
+something.length()

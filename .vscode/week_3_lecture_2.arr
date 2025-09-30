@@ -11,7 +11,7 @@ end
 
 second-workout = workouts.row-n(1)
 
-#second-workout["activity"]
+second-workout["activity"]
 
 recipes = load-table:
   title :: String,
