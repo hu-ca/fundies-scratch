@@ -84,8 +84,10 @@ end
 
 obfuscation(items)
 
+
+
 fun add-vat(t :: Table) -> Table:
-  build-column(items, "total", ("price" * 1.2))
+  build-column(t, "total", (transform-column(t, "price", lam(price :: Number): price * 1.2 end)
 end
 
 add-vat(items)
