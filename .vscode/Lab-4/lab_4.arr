@@ -58,13 +58,19 @@ worst-flight["flight"]
 worst-flight["origin"]
 worst-flight["dep-delay"]
 
-fun change-to-0(o :: Number) -> Number:
-  doc: ""
-  if o["dep-delay"] < 0: 
-    o["dep-delay"] = 0
-  else:
+#fun change-to-0(o :: Number) -> Number:
+#doc: ""
+#if o["dep-delay"] < 0: 
+  # o["dep-delay"] = 0
+  # else:
     
-  end
-end
+  #end
+#end
 
-transform-column(flights, "dep-delay", lam(o): )
+transform-column(flights, "dep-delay", lam(o): 
+  if o < 0: 
+  0
+  else: 
+  o 
+  end 
+  end)
