@@ -33,7 +33,7 @@ where:
   my-alternating([list: 1,2,3,4,5,6]) is [list: 1,3,5]
 end
 
-fun my-max(l):
+#|fun my-max(l):
   cases (List) l:
     | empty => raise("not defined for empty lists")
     | link(f, r) => 
@@ -45,6 +45,7 @@ fun my-max(l):
 where:
   my-max([list: 2,1,4,3,2]) is 4
 end
+|#
 
 fun my-rs(acc, l):
   cases (List) l:
@@ -84,7 +85,35 @@ fun more-than-five(l :: List<String>) -> List:
       end
   end
 where:
-  
+  more-than-five([list: "hello world", "hi", "cheese"]) is [list: "hello world", "cheese"]
 end
 
+fun my-len(l):
+  cases (List) l:
+    | empty      => 0
+    | link(f, r) => 1 + my-len(r)
+  end
+where:
+  my-len([list: 7, 8, 9]) is 3
+end
+
+fun my-sum(l):
+  cases (List) l:
+    | empty      => 0
+    | link(f, r) => f + my-sum(r)
+  end
+where:
+  my-sum([list: 7, 8, 9]) is 24
+end
+
+fun my-average(l :: List) -> Number:
+  cases (List) l:
+    | empty => 0
+    | link(f,r) => (f + my-sum(r)) / (1 + my-len(r))
+  end
+where:
+  my-average([list: 7, 8, 9]) is 8
+end
+
+fun my-m(l :: List) 
         
