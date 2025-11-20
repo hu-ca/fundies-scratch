@@ -40,6 +40,20 @@ fun count-nodes-children(c :: List<TaxonomyTree>) -> Number:
   end
 end
 
+fun count-leaves(t :: TaxonomyTree) -> Number:
+  cases (List) t.children:
+    | empty => 1 #this node is a leaf
+    | else => count-leaves-children(t.children)
+  end
+end
+
+fun count-leaves-children(c :: List<TaxonomyTree>) -> Number:
+  cases (List) c:
+    | empty => 0
+    | link(first, rest) => count-leaves(first) + count-leaves-children(rest)
+  end
+end
+
 fun count-species(t :: TaxonomyTree) -> Number:
   (if t.rank == "Species":
     1 
@@ -81,4 +95,34 @@ fun count-rank-children(c :: List<TaxonomyTree>, r :: String) -> Number:
 end
 
 fun taxon-height(t :: TaxonomyTree) -> Number:
+  cases (List) t.children:
+    | empty => 1
+    | else => 1 + taxon-height-children(t.children)
+  end
+where:
+  taxon-height(felidae) is 3
+  taxon-height(house-cat) is 1
+  taxon-height(felis) is 2
+end
+
+fun taxon-height-children(c :: List<TaxonomyTree>) -> Number:
+  cases (List) c:
+    | empty => 0
+    | link(first, rest) => num-max(taxon-height(first), taxon-height-children(rest))
+  end
+end
+
+fun all-names(t :: TaxonomyTree) -> List<String>:
+  append([list: t.name], all-names-list(t.children)) 
   
+where:
+  all-names(lion) is [list: "Panthera leo"]
+  all-names(panthera) is [list: "Panthera", "Panthera leo", "Panthera tigris", "Panthera pardus"]
+end
+
+fun all-names-list(c :: List<TaxonomyTree>) -> List<String>:
+  cases (List) c:
+  | empty => empty
+  | link(first, rest) => append(all-names(first), all-names-list(rest))
+  end
+end
