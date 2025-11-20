@@ -6,11 +6,6 @@ include data-source
 penguins =
   load-table: number, species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex, year
   source: csv-table-file("penguins.csv", default-options)
-    sanitize bill_length_mm using num-sanitizer
-    sanitize bill_depth_mm using num-sanitizer
-    sanitize flipper_length_mm using num-sanitizer
-    sanitize body_mass_g using num-sanitizer
-    sanitize year using num-sanitizer
 end
 
 penguins
@@ -18,33 +13,45 @@ penguins
 # Scalar Processing Example:
 # Question: Does this penguin row represent a male penguin?
 
-fun is-male(r :: Row) -> Number:
-  if r["sex"] == "male":
-    1
-  else:
-    0
+fun count-males(t :: Table) -> Number:
+  var total = 0
+  block:
+  for each(r :: Row from t):
+    if r["sex"] == "male":
+      total := total + 1
+    else:
+      total := total + 0
+    end
   end
-where:
-  is-male(penguins.row-n(0)) is 1
+  total
+  end
 end
+count-males(penguins)
+
+
 
 #transformation
-fun body-mass-to-category(r :: Row) -> List<String>:
-  doc: ""
-  category_list = [list: ]
-  if ( > 0) and (aqi <= 50):
-    "Good"
-  else if (aqi >= 51) and (aqi <= 100):
-    "Moderate"
-  else if (aqi >= 101) and (aqi <= 150):
-    "Unhealthy"
-  else:
-    "Hazardous"
-  end
-where: 
-  air-quality(3) is "Good"
-  air-quality(55) is "Moderate"
-  air-quality(105) is "Unhealthy"
-  air-quality(160) is "Hazardous"
+fun grams-to-lbs(t :: Table) -> Table:
+  transform-column(
+    t, "body_mass_g",
+    lam(a :: Number): a / 453.6
+    end)
+where:
+  # minimal unit-style examples for the function behavior
+  p =
+    table: m :: Number
+      row: 20
+      row:   10
+      row:  2000
+      row:  100
+    end
+  
+  grams-to-lbs(p) is
+  table: m :: Number
+    row: 20 / 453.6           # early arrival => unchanged
+    row:  10 / 453.6      # remains 0
+    row: 2000 / 453.6      # discounted
+    row:  100 / 453.6           # unchanged (too large to discount)
+    end
 end
   
